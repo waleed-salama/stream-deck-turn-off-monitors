@@ -37,11 +37,13 @@ Use a standard Node-based Stream Deck plugin with a single macOS-focused action 
 
 ### Asset pipeline
 
-- Source icons live in `assets/icons/*.svg`.
-- `scripts/render-icons.sh` rasterizes Lucide-based compositions into the action, key, category, and marketplace PNG assets in the `.sdPlugin` bundle.
-- The generated PNGs use transparent backgrounds so Stream Deck can render them cleanly on-device.
-- The standard `npm run build` path invokes the icon render step before bundling, so generated assets stay in sync with code builds.
-- The runtime action no longer overrides the packaged key image, so the rendered Stream Deck assets are the single source of truth for the plugin's visuals.
+- `assets/icons/sleep-icon.svg` is the canonical full-color icon source for the product.
+- `scripts/render-icons.sh` derives the packaged Stream Deck key and plugin PNGs from that SVG.
+- The script still pulls official Lucide glyphs from `node_modules/lucide-static/icons` for the monochrome action/category icons required by Stream Deck UI guidelines.
+- The generated Stream Deck PNGs use transparent backgrounds so the hardware and app can render them cleanly.
+- The standard `npm run build` path invokes the icon render step before bundling, so packaged plugin assets stay in sync with code builds.
+- Marketplace app icons, thumbnails, and gallery images are maintained from the HTML/CSS sources in `assets/marketplace/src/`, which reference the same canonical SVG directly.
+- The runtime action no longer overrides the packaged key image, so the rendered Stream Deck assets remain consistent with the checked-in icon source.
 
 ### Source layout
 
@@ -98,4 +100,5 @@ Use a standard Node-based Stream Deck plugin with a single macOS-focused action 
 3. Implement the action handler to run `/usr/bin/pmset displaysleepnow`. Completed.
 4. Add structured logging around command start, exit status, and stderr. Completed.
 5. Add a diagnostics path for `pmset -g assertions`. Deferred unless immediate wakeups show up in testing.
-6. Test on the target Mac with the actual Stream Deck app and hardware. Pending.
+6. Test on the target Mac with the actual Stream Deck app and hardware. Completed.
+7. Submit the packaged plugin to Maker Console and respond to any Marketplace review feedback. In progress.

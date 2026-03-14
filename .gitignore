@@ -1,7 +1,13 @@
 # Node.js
 node_modules/
+turn-off-displays/
 
 # Stream Deck files
 *.sdPlugin/bin
 *.sdPlugin/logs
 *.streamDeckPlugin
+
+# Local scratch output
+artifacts/
+output/
+tmp/

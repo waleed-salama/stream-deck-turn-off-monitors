@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./base.css" />
+  </head>
+  <body>
+    <svg width="0" height="0" style="position:absolute">
+      <symbol id="monitor-off" viewBox="0 0 24 24">
+        <path d="M12 17v4" />
+        <path d="M17 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 1.184-1.826" />
+        <path d="m2 2 20 20" />
+        <path d="M8 21h8" />
+        <path d="M8.656 3H20a2 2 0 0 1 2 2v10a2 2 0 0 1-.293 1.042" />
+      </symbol>
+      <symbol id="zap" viewBox="0 0 24 24">
+        <path d="M4 14a1 1 0 0 1-.78-1.625l7-9A1 1 0 0 1 12 4v5h8a1 1 0 0 1 .78 1.625l-7 9A1 1 0 0 1 12 19v-5Z"/>
+      </symbol>
+      <symbol id="sparkles" viewBox="0 0 24 24">
+        <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.937A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .962L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z" />
+      </symbol>
+    </svg>
+    <div class="canvas">
+      <div class="shell"></div>
+      <div style="position:absolute; left:120px; top:120px; right:120px;">
+        <div class="eyebrow">One-Press Workflow</div>
+        <h1 class="title" style="max-width: 1200px;">Leave your desk without heating up the room</h1>
+        <p class="subtitle" style="max-width: 1180px;">Press the key once, let the monitors sleep, and keep the computer itself awake for downloads, builds, or long-running work.</p>
+
+        <div class="features">
+          <section class="feature">
+            <svg class="symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#sparkles"></use></svg>
+            <h3>Instant key action</h3>
+            <p>One Stream Deck press runs the display sleep command immediately.</p>
+          </section>
+          <section class="feature">
+            <svg class="symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#monitor-off"></use></svg>
+            <h3>Displays go dark</h3>
+            <p>Connected screens sleep without relying on a screensaver or full system sleep.</p>
+          </section>
+          <section class="feature">
+            <svg class="symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#zap"></use></svg>
+            <h3>Mac stays running</h3>
+            <p>Background tasks, syncs, and builds continue while the monitors are off.</p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
