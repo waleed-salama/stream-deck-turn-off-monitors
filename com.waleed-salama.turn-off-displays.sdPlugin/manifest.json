@@ -1,12 +1,13 @@
 {
 	"Name": "Turn Off Displays",
-	"Version": "0.1.0.0",
+	"Version": "0.2.0.0",
 	"Author": "Waleed Salama",
 	"Actions": [
 		{
 			"Name": "Turn Off Displays",
 			"UUID": "com.waleed-salama.turn-off-displays.sleep-displays",
 			"Icon": "imgs/actions/sleep-displays/icon",
+			"PropertyInspectorPath": "ui/turn-off-displays.html",
 			"Tooltip": "Turns off all connected displays without sleeping the Mac.",
 			"Controllers": [
 				"Keypad"

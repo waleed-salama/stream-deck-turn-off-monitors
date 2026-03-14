@@ -56,6 +56,12 @@ Use a standard Node-based Stream Deck plugin with a single macOS-focused action 
 ### Runtime behavior
 
 - Default press behavior: run `/usr/bin/pmset displaysleepnow`
+- Optional away behavior:
+  - save current audio state
+  - mute audio
+  - start a detached return watcher
+  - sleep displays
+  - restore the saved audio state when the Mac becomes active again
 - Failure behavior:
   - log the command, exit code, stderr, and timestamp
   - optionally show an alert state on the key
@@ -74,8 +80,8 @@ Use a standard Node-based Stream Deck plugin with a single macOS-focused action 
 ### Option B: Node action + bundled native helper
 
 - Backend executes a bundled macOS helper binary.
-- Helper either calls `pmset` or wraps future macOS-specific logic.
-- Better if we later want richer diagnostics, code signing separation, or a reusable local utility.
+- The helper now owns optional audio-state capture, mute, and restore behavior while the Node action still owns the display-sleep command and Stream Deck interaction.
+- This is justified because return-driven restore is a long-lived session-event problem, not just a one-shot shell command.
 
 ### Option C: Fully native Stream Deck plugin
 
@@ -100,5 +106,5 @@ Use a standard Node-based Stream Deck plugin with a single macOS-focused action 
 3. Implement the action handler to run `/usr/bin/pmset displaysleepnow`. Completed.
 4. Add structured logging around command start, exit status, and stderr. Completed.
 5. Add a diagnostics path for `pmset -g assertions`. Deferred unless immediate wakeups show up in testing.
-6. Test on the target Mac with the actual Stream Deck app and hardware. Completed.
+6. Test on the target Mac with the actual Stream Deck app and hardware. Completed, including optional audio mute/restore.
 7. Submit the packaged plugin to Maker Console and respond to any Marketplace review feedback. In progress.

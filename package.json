@@ -1,8 +1,9 @@
 {
     "scripts": {
+        "helper": "bash scripts/build-macos-helper.sh",
         "icons": "bash scripts/render-icons.sh",
-        "build": "npm run icons && rollup -c",
-        "watch": "npm run icons && rollup -c -w --watch.onEnd=\"streamdeck restart com.waleed-salama.turn-off-displays\"",
+        "build": "npm run helper && npm run icons && rollup -c",
+        "watch": "npm run helper && npm run icons && rollup -c -w --watch.onEnd=\"streamdeck restart com.waleed-salama.turn-off-displays\"",
         "validate": "streamdeck validate com.waleed-salama.turn-off-displays.sdPlugin",
         "pack": "streamdeck pack com.waleed-salama.turn-off-displays.sdPlugin"
     },
