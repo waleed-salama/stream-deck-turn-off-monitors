@@ -1,0 +1,42 @@
+{
+	"Name": "Turn Off Displays",
+	"Version": "0.1.0.0",
+	"Author": "Waleed Salama",
+	"Actions": [
+		{
+			"Name": "Turn Off Displays",
+			"UUID": "com.waleed-salama.turn-off-displays.sleep-displays",
+			"Icon": "imgs/actions/sleep-displays/icon",
+			"Tooltip": "Turns off all connected displays without sleeping the Mac.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/sleep-displays/key",
+					"TitleAlignment": "middle"
+				}
+			]
+		}
+	],
+	"Category": "Turn Off Displays",
+	"CategoryIcon": "imgs/plugin/category-icon",
+	"CodePath": "bin/plugin.js",
+	"Description": "Turn off all displays on macOS without sleeping the computer.",
+	"Icon": "imgs/plugin/marketplace",
+	"SDKVersion": 3,
+	"Software": {
+		"MinimumVersion": "6.9"
+	},
+	"OS": [
+		{
+			"Platform": "mac",
+			"MinimumVersion": "12"
+		}
+	],
+	"Nodejs": {
+		"Version": "20",
+		"Debug": "enabled"
+	},
+	"UUID": "com.waleed-salama.turn-off-displays"
+}
