@@ -23,7 +23,7 @@
 	"CategoryIcon": "imgs/plugin/category-icon",
 	"CodePath": "bin/plugin.js",
 	"Description": "Turn off all displays on macOS without sleeping the computer.",
-	"Icon": "imgs/plugin/marketplace",
+	"Icon": "imgs/plugin/icon",
 	"SDKVersion": 3,
 	"Software": {
 		"MinimumVersion": "6.9"

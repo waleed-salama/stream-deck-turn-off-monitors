@@ -71,10 +71,19 @@ Build a Stream Deck plugin for macOS that turns off all displays while leaving t
 
 - A Stream Deck plugin was scaffolded with Elgato's CLI and converted from the sample counter action into a macOS-only `turn-off-displays` action.
 - The action backend now calls `/usr/bin/pmset displaysleepnow`.
-- The icon pipeline now uses official Lucide glyphs and exports transparent PNG assets for the Stream Deck bundle.
+- The full-color icon source of truth is now `assets/icons/sleep-icon.svg`, and the packaged Stream Deck key/plugin PNGs derive from that SVG.
+- The monochrome action/category icons still use official Lucide glyphs and transparent PNG exports for the Stream Deck bundle.
+- The repo now includes Maker Console submission assets, including a generated app icon and a thumbnail under `assets/marketplace/`.
+- The repo also now includes three 1920×960 gallery images plus editable HTML/CSS source files for future marketing-asset revisions.
 - The plugin validates successfully with `streamdeck validate`.
 - A distributable package was created successfully with `streamdeck pack`.
-- The plugin was linked into the local Stream Deck installation and restarted successfully.
+- The plugin was linked into the local Stream Deck installation, tested successfully on actual hardware, and submitted to Maker Console for Marketplace review.
+
+## Remaining human publication steps
+
+- Wait for Marketplace review feedback in Maker Console.
+- If review requests changes, update the package assets or metadata and resubmit.
+- After approval, confirm the public listing metadata and support contact look correct on the live Marketplace page.
 
 ## Source Notes
 
