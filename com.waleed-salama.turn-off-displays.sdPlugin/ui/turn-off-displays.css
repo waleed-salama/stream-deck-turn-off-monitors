@@ -1,0 +1,64 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: #e5e7eb;
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+body {
+  padding: 10px 12px;
+}
+
+.panel {
+  display: grid;
+  gap: 10px;
+}
+
+.setting {
+  display: grid;
+  gap: 4px;
+}
+
+.toggle-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.copy {
+  display: grid;
+  gap: 2px;
+}
+
+.label {
+  font-weight: 600;
+}
+
+.hint,
+.note {
+  color: rgba(229, 231, 235, 0.72);
+}
+
+.note {
+  margin: 0;
+  padding: 2px 0 0;
+  font-size: 12px;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #fbbf24;
+}
+
+input[type="checkbox"]:disabled {
+  opacity: 0.45;
+}
+
+.setting.is-disabled .copy {
+  opacity: 0.55;
+}

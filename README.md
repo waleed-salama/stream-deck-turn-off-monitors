@@ -16,6 +16,21 @@ The canonical full-color key icon source lives at `assets/icons/sleep-icon.svg`.
 Stream Deck key/plugin PNGs and Marketplace mockups should derive from that SVG so the icon geometry stays consistent everywhere.
 The monochrome action/category icons are still derived from official [Lucide](https://lucide.dev/) glyphs.
 
+## Optional Away Workflow
+
+The action now also supports an optional "away from desk" workflow through its property inspector:
+
+- `Mute And Restore Audio`
+
+When enabled, pressing the key will:
+
+1. Save the current output volume + mute state
+2. Mute system audio
+3. Sleep the displays
+4. Restore the previous audio state when the Mac becomes active again
+
+The audio watcher is intentionally automatic. It does not require a second Stream Deck button press to restore sound.
+
 ## Development
 
 Install dependencies:
@@ -31,6 +46,7 @@ npm run build
 ```
 
 `npm run build` regenerates the Stream Deck PNG icon assets before bundling the plugin code.
+On macOS it also compiles the bundled Swift helper used by the optional audio workflow. If `swiftc` is unavailable, the helper build is skipped with a warning.
 
 Validate the manifest and bundle:
 
@@ -63,6 +79,8 @@ npm run pack
 - The manifest is macOS-only.
 - The generated PNG icons use transparent backgrounds so Stream Deck's own key rendering shows through.
 - Marketplace thumbnails and gallery mockups are rendered from the HTML/CSS sources in `assets/marketplace/src/`, which reference `assets/icons/sleep-icon.svg` as the source of truth.
+- The optional audio workflow uses a bundled macOS helper binary plus AppleScript-based system control.
+- The property inspector intentionally exposes a single audio-management checkbox; the plugin does not promise a secure macOS lock step.
 - If the displays wake immediately after sleeping, another process is likely holding a power assertion. `pmset -g assertions` is the first thing to inspect.
 
 ## Marketplace Prep

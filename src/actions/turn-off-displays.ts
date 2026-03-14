@@ -1,5 +1,13 @@
-import streamDeck, { action, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
+import streamDeck, {
+	action,
+	KeyDownEvent,
+	SingletonAction,
+	WillAppearEvent,
+} from "@elgato/streamdeck";
+import { randomUUID } from "node:crypto";
+import { setTimeout as delay } from "node:timers/promises";
 
+import { prepareAwayAudio, restoreAwayAudioNow, startUnlockWatcher } from "../lib/run-away-audio-helper";
 import { describeExecFileError, runDisplaySleep } from "../lib/run-display-sleep";
 
 /**
@@ -10,9 +18,15 @@ import { describeExecFileError, runDisplaySleep } from "../lib/run-display-sleep
  * action instance in the Stream Deck app.
  */
 type DisplaySleepSettings = {
+	manageAudioWhileAway?: boolean;
+	manageAudioWhileLocked?: boolean;
 	lastRunAt?: string;
 	lastStatus?: "ok" | "error";
 	lastError?: string;
+};
+
+type ResolvedDisplaySleepSettings = DisplaySleepSettings & {
+	manageAudioWhileAway: boolean;
 };
 
 /**
@@ -33,6 +47,11 @@ export class TurnOffDisplays extends SingletonAction<DisplaySleepSettings> {
 	 */
 	override async onWillAppear(ev: WillAppearEvent<DisplaySleepSettings>): Promise<void> {
 		await ev.action.setTitle("");
+
+		const normalized = normalizeSettings(ev.payload.settings);
+		if (hasSettingsDrift(ev.payload.settings, normalized)) {
+			await ev.action.setSettings(normalized);
+		}
 	}
 
 	/**
@@ -46,18 +65,35 @@ export class TurnOffDisplays extends SingletonAction<DisplaySleepSettings> {
 	 * @param ev Key press event emitted by Stream Deck for this action instance.
 	 */
 	override async onKeyDown(ev: KeyDownEvent<DisplaySleepSettings>): Promise<void> {
-		streamDeck.logger.info("Executing /usr/bin/pmset displaysleepnow");
+		const settings = normalizeSettings(ev.payload.settings);
+		const shouldManageAudio = settings.manageAudioWhileAway;
+		let audioToken: string | undefined;
+
+		streamDeck.logger.info(`Executing away workflow (displaySleep=true, manageAudioWhileAway=${shouldManageAudio})`);
 
 		try {
+			if (shouldManageAudio) {
+				audioToken = randomUUID();
+				const result = await prepareAwayAudio(audioToken);
+
+				if (result.stderr.trim().length > 0) {
+					streamDeck.logger.warn(`prepare-away wrote to stderr: ${result.stderr.trim()}`);
+				}
+
+				startUnlockWatcher(audioToken);
+				await delay(150);
+			}
+
 			const result = await runDisplaySleep();
-			const settings: DisplaySleepSettings = {
-				...ev.payload.settings,
+
+			const nextSettings: DisplaySleepSettings = {
+				...settings,
 				lastRunAt: new Date().toISOString(),
 				lastStatus: "ok",
 				lastError: undefined,
 			};
 
-			await ev.action.setSettings(settings);
+			await ev.action.setSettings(nextSettings);
 			await ev.action.showOk();
 
 			if (result.stderr.trim().length > 0) {
@@ -65,16 +101,42 @@ export class TurnOffDisplays extends SingletonAction<DisplaySleepSettings> {
 			}
 		} catch (error) {
 			const message = describeExecFileError(error);
-			const settings: DisplaySleepSettings = {
-				...ev.payload.settings,
+
+			if (audioToken) {
+				try {
+					await restoreAwayAudioNow(audioToken);
+				} catch (restoreError) {
+					streamDeck.logger.error(`Failed to roll back audio state: ${describeExecFileError(restoreError)}`);
+				}
+			}
+
+			const nextSettings: DisplaySleepSettings = {
+				...settings,
 				lastRunAt: new Date().toISOString(),
 				lastStatus: "error",
 				lastError: message,
 			};
 
 			streamDeck.logger.error(`Failed to sleep displays: ${message}`);
-			await ev.action.setSettings(settings);
+			await ev.action.setSettings(nextSettings);
 			await ev.action.showAlert();
 		}
 	}
+}
+
+function normalizeSettings(settings: DisplaySleepSettings): ResolvedDisplaySleepSettings {
+	const manageAudioWhileAway = settings.manageAudioWhileAway === true || settings.manageAudioWhileLocked === true;
+
+	return {
+		...settings,
+		manageAudioWhileAway,
+		manageAudioWhileLocked: undefined,
+	};
+}
+
+function hasSettingsDrift(current: DisplaySleepSettings, normalized: ResolvedDisplaySleepSettings): boolean {
+	return (
+		current.manageAudioWhileAway !== normalized.manageAudioWhileAway ||
+		current.manageAudioWhileLocked !== normalized.manageAudioWhileLocked
+	);
 }
