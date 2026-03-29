@@ -1,6 +1,6 @@
 {
 	"Name": "Turn Off Displays",
-	"Version": "0.2.0.0",
+	"Version": "0.3.0.0",
 	"Author": "Waleed Salama",
 	"Actions": [
 		{
@@ -18,12 +18,28 @@
 					"TitleAlignment": "middle"
 				}
 			]
+		},
+		{
+			"Name": "Reinitialize Display",
+			"UUID": "com.waleed-salama.turn-off-displays.reinitialize-display",
+			"Icon": "imgs/actions/reinitialize-display/icon",
+			"PropertyInspectorPath": "ui/reinitialize-display.html",
+			"Tooltip": "Reinitialize selected displays through BetterDisplay.",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/reinitialize-display/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		}
 	],
 	"Category": "Turn Off Displays",
 	"CategoryIcon": "imgs/plugin/category-icon",
 	"CodePath": "bin/plugin.js",
-	"Description": "Turn off all displays on macOS without sleeping the computer.",
+	"Description": "Turn off all displays on macOS and reinitialize selected BetterDisplay-managed displays.",
 	"Icon": "imgs/plugin/icon",
 	"SDKVersion": 3,
 	"Software": {

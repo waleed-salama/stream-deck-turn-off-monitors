@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reinitialize Display Settings</title>
+    <link rel="stylesheet" href="./reinitialize-display.css" />
+  </head>
+  <body>
+    <main class="panel">
+      <section class="setting">
+        <label class="field-row" for="betterDisplayPath">
+          <span class="copy">
+            <span class="label">BetterDisplay Binary Path</span>
+            <span class="hint">Used for display scanning and reinitialize actions.</span>
+          </span>
+          <input id="betterDisplayPath" type="text" spellcheck="false" />
+        </label>
+      </section>
+
+      <section class="setting">
+        <div class="section-header">
+          <span class="copy">
+            <span class="label">Connected Displays</span>
+            <span class="hint">Scanned from BetterDisplay with <code>get -identifiers</code>.</span>
+          </span>
+          <button id="scanDisplays" type="button">Scan Displays</button>
+        </div>
+        <p id="scanStatus" class="note">Ready to scan BetterDisplay displays.</p>
+        <div id="displayList" class="display-list"></div>
+      </section>
+    </main>
+
+    <script src="./reinitialize-display.js"></script>
+  </body>
+</html>

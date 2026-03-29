@@ -84,8 +84,17 @@ Turn Off Displays
 
 Turn off all connected macOS displays from a single Stream Deck key without putting the Mac to sleep.
 
+Optional expansion for a future listing refresh:
+
+- Includes a second action that reinitializes selected BetterDisplay-managed displays.
+
 ### Release notes draft
 
 - Initial release
 - Adds a one-tap action to sleep all connected displays on macOS
 - Built for Stream Deck on macOS 12 and later
+
+Draft for a follow-up release:
+
+- Adds a second action for reinitializing selected BetterDisplay-managed displays
+- Scans BetterDisplay display identifiers from the property inspector

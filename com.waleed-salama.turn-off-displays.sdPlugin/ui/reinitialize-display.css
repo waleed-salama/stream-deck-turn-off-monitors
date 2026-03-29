@@ -1,0 +1,116 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: #e5e7eb;
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+body {
+  padding: 10px 12px;
+}
+
+.panel {
+  display: grid;
+  gap: 10px;
+}
+
+.setting {
+  display: grid;
+  gap: 6px;
+}
+
+.field-row,
+.copy {
+  display: grid;
+  gap: 4px;
+}
+
+.section-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.label,
+.display-title {
+  font-weight: 600;
+}
+
+.hint,
+.note,
+.display-meta,
+.empty-state {
+  color: rgba(229, 231, 235, 0.72);
+}
+
+.note,
+.empty-state {
+  margin: 0;
+  padding: 2px 0 0;
+  font-size: 12px;
+}
+
+input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(229, 231, 235, 0.18);
+  border-radius: 6px;
+  background: rgba(15, 23, 42, 0.38);
+  color: #f8fafc;
+  padding: 8px 10px;
+  font: inherit;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: rgba(251, 191, 36, 0.9);
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.16);
+}
+
+button {
+  appearance: none;
+  border: 1px solid rgba(229, 231, 235, 0.18);
+  border-radius: 6px;
+  background: rgba(15, 23, 42, 0.38);
+  color: #f8fafc;
+  padding: 7px 10px;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: rgba(229, 231, 235, 0.28);
+}
+
+.display-list {
+  display: grid;
+  gap: 6px;
+}
+
+.display-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.display-copy {
+  display: grid;
+  gap: 2px;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: #fbbf24;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  color: #fcd34d;
+}

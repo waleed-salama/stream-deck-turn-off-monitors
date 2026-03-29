@@ -2,6 +2,8 @@
 
 Stream Deck plugin for macOS that turns off all connected displays without putting the Mac to sleep.
 
+It also includes a BetterDisplay-powered reinitialize action for refreshing selected displays by their current `tagID`.
+
 ## How it works
 
 When the action is pressed, the plugin backend runs:
@@ -30,6 +32,20 @@ When enabled, pressing the key will:
 4. Restore the previous audio state when the Mac becomes active again
 
 The audio watcher is intentionally automatic. It does not require a second Stream Deck button press to restore sound.
+
+## BetterDisplay Reinitialize
+
+The plugin also includes a `Reinitialize Display` action that:
+
+- scans BetterDisplay for connected displays using `get -identifiers`
+- shows display names in the property inspector but persists the selected BetterDisplay `tagID` values
+- rescans on key press and reinitializes only the currently matched selected `tagID` values
+- runs BetterDisplay directly without a shell using `perform -tagID=<id> -reinitialize`
+
+Behavior note:
+
+- The plugin targets only the selected BetterDisplay `tagID` values.
+- On this machine, BetterDisplay itself may still visibly refresh additional displays when one selected display is reinitialized. Plugin logs confirmed the action can invoke only `Dell 24"(2)` while the Samsung G9 also refreshes afterward, which suggests BetterDisplay-side cascading rather than an extra plugin-targeted call.
 
 ## Development
 
@@ -82,6 +98,8 @@ npm run pack
 - The optional audio workflow uses a bundled macOS helper binary plus AppleScript-based system control.
 - The property inspector intentionally exposes a single audio-management checkbox; the plugin does not promise a secure macOS lock step.
 - If the displays wake immediately after sleeping, another process is likely holding a power assertion. `pmset -g assertions` is the first thing to inspect.
+- The BetterDisplay reinitialize action intentionally avoids shell execution and calls the BetterDisplay app binary directly.
+- BetterDisplay display discovery currently uses `get -identifiers` and filters to `deviceType === "Display"`, so virtual screens and display groups are not shown in the reinitialize action UI.
 
 ## Marketplace Prep
 

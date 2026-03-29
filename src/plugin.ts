@@ -1,5 +1,6 @@
 import streamDeck from "@elgato/streamdeck";
 
+import { ReinitializeDisplay } from "./actions/reinitialize-display";
 import { TurnOffDisplays } from "./actions/turn-off-displays";
 
 /**
@@ -12,5 +13,6 @@ import { TurnOffDisplays } from "./actions/turn-off-displays";
 streamDeck.logger.setLevel(process.env.ROLLUP_WATCH ? "debug" : "info");
 
 streamDeck.actions.registerAction(new TurnOffDisplays());
+streamDeck.actions.registerAction(new ReinitializeDisplay());
 
 streamDeck.connect();
