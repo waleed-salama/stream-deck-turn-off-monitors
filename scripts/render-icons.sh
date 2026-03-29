@@ -4,7 +4,9 @@ set -euo pipefail
 
 # Regenerates the PNG assets embedded in the Stream Deck plugin bundle.
 #
-# The full-color key icon source of truth is `assets/icons/sleep-icon.svg`.
+# The full-color key icon sources of truth are `assets/icons/sleep-icon.svg`
+# for the original action and `assets/icons/reinitialize-display-icon.svg`
+# for the BetterDisplay resync action.
 # Monochrome action/category icons still come from official Lucide SVG glyphs
 # inside `node_modules/lucide-static`. Marketplace screenshots and thumbnails
 # are maintained separately from the HTML/CSS sources under `assets/marketplace/src/`
@@ -14,8 +16,10 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PLUGIN_DIR="$ROOT_DIR/com.waleed-salama.turn-off-displays.sdPlugin"
 LUCIDE_DIR="$ROOT_DIR/node_modules/lucide-static/icons"
 ACTION_DIR="$PLUGIN_DIR/imgs/actions/sleep-displays"
+REINITIALIZE_ACTION_DIR="$PLUGIN_DIR/imgs/actions/reinitialize-display"
 PLUGIN_IMG_DIR="$PLUGIN_DIR/imgs/plugin"
 KEY_SOURCE_SVG="$ROOT_DIR/assets/icons/sleep-icon.svg"
+REINITIALIZE_SOURCE_SVG="$ROOT_DIR/assets/icons/reinitialize-display-icon.svg"
 TMP_DIR="$(mktemp -d)"
 
 trap 'rm -rf "$TMP_DIR"' EXIT
@@ -29,7 +33,7 @@ if ! command -v magick >/dev/null 2>&1; then
   exit 0
 fi
 
-mkdir -p "$ACTION_DIR" "$PLUGIN_IMG_DIR"
+mkdir -p "$ACTION_DIR" "$REINITIALIZE_ACTION_DIR" "$PLUGIN_IMG_DIR"
 rm -f "$PLUGIN_IMG_DIR/marketplace.png" "$PLUGIN_IMG_DIR/marketplace@2x.png"
 
 # Rewrites Lucide's `currentColor` stroke into a concrete hex value so the SVG
@@ -63,6 +67,10 @@ MOON_STAR_SVG="$TMP_DIR/moon-star.svg"
 MONITOR_DIM_SVG="$TMP_DIR/monitor-dim.svg"
 MONITOR_WHITE_SVG="$TMP_DIR/monitor-white.svg"
 MOON_AMBER_SVG="$TMP_DIR/moon-amber.svg"
+MONITOR_SVG="$TMP_DIR/monitor.svg"
+REFRESH_WHITE_SVG="$TMP_DIR/refresh-white.svg"
+REINITIALIZE_KEY_144_PNG="$TMP_DIR/reinitialize-key-144.png"
+REINITIALIZE_KEY_288_PNG="$TMP_DIR/reinitialize-key-288.png"
 KEY_144_PNG="$TMP_DIR/plugin-key-144.png"
 KEY_180_PNG="$TMP_DIR/plugin-key-180.png"
 KEY_288_PNG="$TMP_DIR/plugin-key-288.png"
@@ -73,10 +81,14 @@ paint_svg "$LUCIDE_DIR/moon-star.svg" "#FBBF24" "$MOON_STAR_SVG"
 paint_svg "$LUCIDE_DIR/monitor-off.svg" "#CBD5E1" "$MONITOR_DIM_SVG"
 paint_svg "$LUCIDE_DIR/monitor-off.svg" "#FFFFFF" "$MONITOR_WHITE_SVG"
 paint_svg "$LUCIDE_DIR/moon-star.svg" "#FBBF24" "$MOON_AMBER_SVG"
+paint_svg "$LUCIDE_DIR/monitor.svg" "#FFFFFF" "$MONITOR_SVG"
+paint_svg "$LUCIDE_DIR/refresh-cw.svg" "#FFFFFF" "$REFRESH_WHITE_SVG"
 render_svg_png "$KEY_SOURCE_SVG" 144 144 "$KEY_144_PNG"
 render_svg_png "$KEY_SOURCE_SVG" 180 180 "$KEY_180_PNG"
 render_svg_png "$KEY_SOURCE_SVG" 288 288 "$KEY_288_PNG"
 render_svg_png "$KEY_SOURCE_SVG" 360 360 "$KEY_360_PNG"
+render_svg_png "$REINITIALIZE_SOURCE_SVG" 144 144 "$REINITIALIZE_KEY_144_PNG"
+render_svg_png "$REINITIALIZE_SOURCE_SVG" 288 288 "$REINITIALIZE_KEY_288_PNG"
 
 # Action list icon (20x20 and 40x40) should be monochrome white on transparent.
 magick -size 20x20 xc:none \
@@ -90,6 +102,20 @@ magick -size 40x40 xc:none \
 # Key image shown on the Stream Deck hardware itself.
 cp "$KEY_144_PNG" "$ACTION_DIR/key.png"
 cp "$KEY_288_PNG" "$ACTION_DIR/key@2x.png"
+
+# BetterDisplay reinitialize action assets.
+magick -size 20x20 xc:none \
+  \( -background none "$MONITOR_SVG" -resize 18x18 \) -gravity center -geometry -1+1 -composite \
+  \( -background none "$REFRESH_WHITE_SVG" -resize 9x9 \) -gravity southeast -geometry +0+0 -composite \
+  "$REINITIALIZE_ACTION_DIR/icon.png"
+
+magick -size 40x40 xc:none \
+  \( -background none "$MONITOR_SVG" -resize 36x36 \) -gravity center -geometry -2+2 -composite \
+  \( -background none "$REFRESH_WHITE_SVG" -resize 18x18 \) -gravity southeast -geometry +1+1 -composite \
+  "$REINITIALIZE_ACTION_DIR/icon@2x.png"
+
+cp "$REINITIALIZE_KEY_144_PNG" "$REINITIALIZE_ACTION_DIR/key.png"
+cp "$REINITIALIZE_KEY_288_PNG" "$REINITIALIZE_ACTION_DIR/key@2x.png"
 
 # Small plugin category icon used inside the Stream Deck application UI.
 magick -size 28x28 xc:none \
